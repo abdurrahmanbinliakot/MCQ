@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+.cq_wrap{
+    margin-top: 100px;
+    margin-inline:auto;
+    width:1300px;
+    display: flex;
+    /* gap: 50px; */
+}
+
+.cq_browse_page , .cq_card_page{
+            
+            overflow-y: scroll; 
+            background: white;
+            /* display: block; */
+            display: inline;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+            height: 700px;
+            width: 600px;
+
+            column-rule: 1px solid #000000;
+}
+
+.cq_browse_page::before{
+    content: "MCQ";
+background-color: #c6ffdd;
+height: 100px;
+width: 100px;
+font-size: 50px;
+}
+        .wraper {
+            height: auto;
+            width: 800px;
+        }
+
+
+        page {
+            background: white;
+            display: block;
+            margin: 0 auto;
+            margin-bottom: 0.5cm;
+            box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+            column-count: 2;
+            column-fill: auto;
+            column-rule: 1px solid #000000;
+        }
+
+        page[size="A4"] {
+            width: 21cm;
+            height: 29.7cm;
+        }
+
+        table,
+        figure {
+            page-break-inside: avoid;
+        }
+
+        @media print {
+
+            body,
+            page {
+                margin: 0;
+                box-shadow: 0;
+            }
+        }
+
+        @media print {
+            @page {
+                size: A4;
+                /* size: A4 landscape; */
+                margin-top: 0;
+                margin-bottom: 0;
+                margin-left: 0;
+                margin-right: 0;
+
+            }
+
+            /* @page: left {
+            @bottom-left {
+                content: "Page " counter(page) " of " counter(pages);
+            }
+        }
+
+
+        @page: right {
+            @bottom-left {
+                margin: 10pt 0 30pt 0;
+                border-top: .25pt solid #666;
+                content: "My book";
+                font-size: 9pt;
+                color: #333;
+            }
+        } */
+
+
+            /* @page :left {
+            margin-left: 3cm;
+        }
+
+        @page :right {
+            margin-left: 4cm;
+        } */
+
+            table,
+            figure {
+                page-break-inside: avoid;
+            }
+
+            body {
+                column-count: 2;
+                column-fill: auto;
+                column-rule: 1px solid #000000;
+
+            }
+        }
+
+        .nev_wrap {
+            /* margin-inline: 25px; */
+            /* padding-inline: 25px; */
+            position: fixed;
+            /* background: rgb(91, 179, 230); */
+        }
+
+        .nev_wrap ul {
+            list-style-type: none;
+        }
+
+
+
+
+        body {
+
+            background:linear-gradient(to right, #c6ffdd, #fbd786, #f7797d);
+            overflow-x: hidden;
+        }
+    </style>
+</head>
+
+
+<body>
+<div class="nev_wrap">
+    <div class="container">
+        <nav>
+            <ul class="mcd-menu">
+                <li><a href="{% url 'homepage' %}"><strong>All MCQ</strong></a></li>
+                {% for class_n in classlist %}
+                <li><a href="{% url 'classviewfilterpage' class_n.id %}"><strong>{{class_n}}</strong></a>
+                    <ul>
+                        {% for subject in subjectlist %}
+                        {% if subject.class_name == class_n %}
+                        <li><a href="{% url 'subjectviewfilterpage' subject.id %}">{{subject}}</a>
+                            <ul>
+                                {% for chapter in chapterlist %}
+                                {% if chapter.subject_name == subject %}
+                                <li><a href="{% url 'chapterviewfilterpage' chapter.id %}">{{chapter}}</a></li>
+                                {% endif %}
+                                {% endfor %}
+                            </ul>
+
+                        </li>
+                        {% endif %}
+                        {% endfor %}
+
+                    </ul>
+                </li>
+                {% endfor %}
+            <ul>
+        </nav>
+    </div>
+</div> 
+<!-- <div class="nev_wrap">
+    <h1>All Class</h1>
+    <ul>
+        {% for class_n in classlist %}
+        <li><a href="{% url 'classviewfilterpage' class_n.id %}">{{class_n}}</a></li>
+        <ul>
+            {% for subject in subjectlist %}
+            {% if subject.class_name == class_n %}
+            <li><a href="{% url 'subjectviewfilterpage' subject.id %}">{{subject}}</a>
+                <ul>
+                    {% for chapter in chapterlist %}
+                    {% if chapter.subject_name == subject %}
+                    <li><a href="{% url 'chapterviewfilterpage' chapter.id %}">{{chapter}}</a></li>
+                    {% endif %}
+                    {% endfor %}
+                </ul>
+            </li>
+            {% endif %}
+            {% endfor %}
+        </ul>
+        {% endfor %}
+    </ul>
+
+</div> -->
+
+
+<div class="cq_wrap">
+    <div class="cq_browse_page">
+        {% for val in value %}
+        {% if not val.options_A|length > 10 %}
+        <form action="{% url 'homepage' %}#id_{{forloop.counter}}" method="get">
+
+            <input hidden type="text" id="id_of_last_input_field" name="mcq" value="{{val.id}}">
+            <input type="submit" value="add">
+        </form>
+        <table border="0px" sellspacing="0">
+            <tr>
+                <td id="id_{{forloop.counter}}" valign="top">
+                    {{forloop.counter}}.
+                </td>
+                <td colspan="4">{{val.question_text}}</td>
+            </tr>
+            {% if val.image %}
+            <tr>
+                <td colspan="4"><img src="{{val.image.url}}" height="200px"></td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td> <br></td>
+                <td> (ক). {{val.options_A}} </td>
+                <td> <br></td>
+                <td> (খ). {{val.options_B}}</td>
+
+            </tr>
+            <tr>
+                <td> <br></td>
+                <td> (গ). {{val.options_C}} </td>
+                <td> <br> </td>
+                <td> (ঘ). {{val.options_D}}</td>
+
+            </tr>
+        </table>
+        {% else %}
+
+        <table border="0px" sellspacing="0">
+            <tr>
+                <td valign="top">{{forloop.counter}}.</td>
+                <td>{{val.question_text}}</td>
+            </tr>
+            {% if val.image %}
+            <tr>
+                <td colspan="4"><img src="{{val.image.url}}" height="200px"></td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td><br></td>
+                <td> (ক). {{val.options_A}} </td>
+            </tr>
+            <tr>
+                <td><br></td>
+                <td> (খ). {{val.options_B}}</td>
+            </tr>
+            <tr>
+                <td><br></td>
+                <td> (গ). {{val.options_C}} </td>
+            </tr>
+            <tr>
+                <td><br></td>
+                <td> (ঘ). {{val.options_D}}</td>
+
+            </tr>
+        </table>
+        {% endif %}
+        {% endfor %}
+        <input type="button" onclick="window.location.href='https://www.w3docs.com';" value="w3docs" />
+    </div>
+
+    <div class="cq_card_page">
+        {% for val in questions %}
+        {% if not val.options_A|length > 10 %}
+        <form action="{% url 'homepage' %}#id_p{{forloop.counter}}" method="get">
+           
+            <input  hidden type="text" name="remove_mcq" value="{{val.id}}">
+            <input type="submit" value="Remove">
+        </form>
+        <table border="0px" sellspacing="0">
+            <tr>
+                <td id="id_p{{forloop.counter}}" valign="top">{{forloop.counter}}.</td>
+                <td colspan="4">{{val.question_text}}</td>  
+            </tr>
+            {% if val.image %}
+            <tr>
+                <td colspan="4"><img src="{{val.image.url}}" height="200px"></td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td> <br></td>
+                <td> (ক). {{val.options_A}} </td>
+                <td> <br></td>
+                <td> (খ). {{val.options_B}}</td>
+
+            </tr>
+            <tr>
+                <td> <br></td>
+                <td> (গ). {{val.options_C}} </td>
+                <td> <br> </td>
+                <td> (ঘ). {{val.options_D}}</td>
+
+            </tr>
+        </table>
+        {% else %}
+
+        <table border="0px" sellspacing="0">
+            <tr>
+                <td id="id_p{{forloop.counter}}" valign="top">{{forloop.counter}}.</td>
+                <td>{{val.question_text}}</td>
+            </tr>
+            {% if val.image %}
+            <tr>
+                <td colspan="4"><img src="{{val.image.url}}" height="200px"></td>
+            </tr>
+            {% endif %}
+            <tr>
+                <td><br></td>
+                <td> (ক). {{val.options_A}} </td>
+            </tr>
+            <tr>
+                <td><br></td>
+                <td> (খ). {{val.options_B}}</td>
+            </tr>
+            <tr>
+                <td><br></td>
+                <td> (গ). {{val.options_C}} </td>
+            </tr>
+            <tr>
+                <td><br></td>
+                <td> (ঘ). {{val.options_D}}</td>
+
+            </tr>
+            
+        </table>
+        {% endif %}
+
+        {% endfor %}
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+    const div = document.querySelector("div");
+    const lastInput = document.getElementById("{{ last_input_id }}");
+    lastInput.focus();
+    
+    // Check if the input is partially hidden
+    if (lastInput.offsetTop + lastInput.offsetHeight > div.offsetHeight + div.scrollTop) {
+      div.scrollTop = lastInput.offsetTop + lastInput.offsetHeight - div.offsetHeight;
+    }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+        .wraper{
+            height:auto ;
+            width: 800px;
+        }
+        @media print {
+            @page {
+                size: A4;
+                /* size: A4 landscape; */
+                margin-top: 0;
+                margin-bottom: 0;
+                margin-left: 0;
+                margin-right: 0;
+
+            }
+
+            /* @page: left {
+                @bottom-left {
+                    content: "Page " counter(page) " of " counter(pages);
+                }
+            }
+
+
+            @page: right {
+                @bottom-left {
+                    margin: 10pt 0 30pt 0;
+                    border-top: .25pt solid #666;
+                    content: "My book";
+                    font-size: 9pt;
+                    color: #333;
+                }
+            } */
+
+
+            /* @page :left {
+                margin-left: 3cm;
+            }
+
+            @page :right {
+                margin-left: 4cm;
+            } */
+
+            table,
+            figure {
+                page-break-inside: avoid;
+            }
+
+            body {
+                column-count: 2;
+                column-fill: auto;
+                column-rule: 1px solid #000000;
+
+            }
+        }
+    </style>
+</head>
+
+<body>
+    
+    
+    {% for val in value %}
+    {% if not val.options_A|length > 10 %}
+    {% comment %} <form action="/" method="post">
+        {% csrf_token %}
+        <input hidden type="text" name="mcq" value="{{val.id}}">
+        <input type="submit" value="ADD">
+    </form> {% endcomment %}
+    <table border="0px" sellspacing="0">
+        <tr>
+            <td valign="top">
+                {{val.id}}.
+            </td>
+            <td colspan="4">{{val.question_text}}</td>
+        </tr>
+        <tr>
+            <td> <br></td>
+            <td> (ক). {{val.options_A}} </td>
+            <td> <br></td>
+            <td> (খ). {{val.options_B}}</td>
+            
+        </tr>
+        <tr>
+            <td> <br></td>
+            <td> (গ). {{val.options_C}} </td>
+            <td> <br> </td>
+            <td> (ঘ). {{val.options_D}}</td>
+            
+        </tr>
+    </table>
+    {% else  %}
+    
+    <table border="0px" sellspacing="0">
+        <tr>
+            <td valign="top">{{val.id}}.</td>
+            <td>{{val.question_text}}</td>
+        </tr>
+        <tr>
+            <td><br></td>
+            <td> (ক). {{val.options_A}} </td>
+        </tr>
+        <tr>
+            <td><br></td>
+            <td> (খ). {{val.options_B}}</td>
+        </tr>
+        <tr>
+            <td><br></td>
+            <td> (গ). {{val.options_C}} </td>
+        </tr>
+        <tr>
+            <td><br></td>
+            <td> (ঘ). {{val.options_D}}</td>
+            
+        </tr>
+    </table>
+    {% endif %}
+        {% endfor %}
+        
+        {% comment %} <hr>
+        <a href="{% url 'add_mcq' %}">Add MCQ</a> {% endcomment %}
+    </body>
+    
+    </html>
