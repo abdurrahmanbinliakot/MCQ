@@ -8,8 +8,16 @@
 
 <form action="{% url 'PostView' %}#last" method="post">
     {% csrf_token %}
-    {{form.media }}
-    {{form.as_p }}
+    <div>
+        <textarea name="{{ widget.name }}"{{ widget.attrs }}>
+          {{ widget.value|default:'' }}
+        </textarea>
+        <div name="{{ widget.contenteditable_name }}" contenteditable="true" class="{{ widget.attrs.class }}" placeholder="{{ widget.attrs.placeholder }}" tabindex="{{ widget.attrs.tabindex }}">
+          {{ widget.value|default:'' }}
+        </div>
+      </div>
+    {% comment %} {{form.media }} {% endcomment %}
+    {% comment %} {{form.as_p }} {% endcomment %}
     <input type="submit" value="Submit">
 </form>
 <a href="{% url 'PostView' %}#last"><button>Last</button></a>

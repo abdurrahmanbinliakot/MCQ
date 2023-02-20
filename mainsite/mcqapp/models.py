@@ -1,6 +1,10 @@
 from django.db import models
 
 from ckeditor.fields import RichTextField
+from django_quill.fields import QuillField
+
+class QuillPost(models.Model):
+    content = QuillField()
 
 class Articless(models.Model):
     title = models.CharField(max_length=300, null=True, blank=True, default="Empty Title")
@@ -52,7 +56,7 @@ class MCQ(models.Model):
     options_B = models.CharField(max_length=100)
     options_C = models.CharField(max_length=100)
     options_D = models.CharField(max_length=100)
-    # answer = models.CharField(max_length=100)
+    answer = models.CharField(max_length=100,blank=True,null=True)
     answer = models.CharField(max_length=10, choices=ANS_OPS)
     status = models.CharField(max_length=10, choices=STATUS)
     is_multiple_select = models .BooleanField(default=False)

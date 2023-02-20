@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+
+
+
+
+
+
+
+        @media print {
+
+            body,
+            page {
+                margin: 0;
+                box-shadow: 0;
+
+                column-count: 2;
+                column-fill: auto;
+                column-rule: 1px solid #000000;
+
+            }
+            @page {
+                size: A4;
+                /* size: A4 landscape; */
+                margin-top: 0;
+                margin-bottom: 0;
+                margin-left: 0;
+                margin-right: 0;
+
+            }
+
+            table,
+            figure {
+                page-break-inside: avoid;
+            }
+
+        }
+
+       
+
+    </style>
+    {% include 'django_quill/media.html' %}
+</head>
+
+
+<body>
+
+
+    <page size="A4">
+        {% for val in value %}
+        {% if not val.options_A|length > 10 %}
+        
+        <table border="0px" sellspacing="0">
+            <tr>
+                <td id="{{forloop.counter}}" valign="top">
+                    {{forloop.counter}}.
+                </td>
+                <td colspan="4">{{val.question_text}}</td>
+            </tr>
+            <tr>
+                <td> <br></td>
+                <td> (ক). {{val.options_A}} </td>
+                <td> <br></td>
+                <td> (খ). {{val.options_B}}</td>
+    
+            </tr>
+            <tr>
+                <td> <br></td>
+                <td> (গ). {{val.options_C}} </td>
+                <td> <br> </td>
+                <td> (ঘ). {{val.options_D}}</td>
+    
+            </tr>
+        </table>
+        {% else %}
+    
+        <table border="0px" sellspacing="0">
+            <tr>
+                <td valign="top">{{forloop.counter}}.</td>
+                <td>{{val.question_text}}</td>
+            </tr>
+            <tr>
+                <td><br></td>
+                <td> (ক). {{val.options_A}} </td>
+            </tr>
+            <tr>
+                <td><br></td>
+                <td> (খ). {{val.options_B}}</td>
+            </tr>
+            <tr>
+                <td><br></td>
+                <td> (গ). {{val.options_C}} </td>
+            </tr>
+            <tr>
+                <td><br></td>
+                <td> (ঘ). {{val.options_D}}</td>
+    
+            </tr>
+        </table>
+        {% endif %}
+        {% endfor %}
+    </page>
+    
+</body>
+
+</html>

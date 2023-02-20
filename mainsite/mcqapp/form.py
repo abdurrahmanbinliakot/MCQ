@@ -2,6 +2,9 @@ from django import forms
 from django_quill.forms import QuillFormField
 
 
+class QuillFieldForm(forms.Form):
+    content = QuillFormField()
+
 
 from django import forms
 from .models import Articless
@@ -48,15 +51,45 @@ class add_chapter_name(forms.Form):
          'autocomplete': 'off'
          }))
 
+
+
+class ContentEditableTextarea(forms.widgets.Widget):
+    template_name = 'contenteditable_textarea.html'
+
+    def __init__(self, attrs=None):
+        super().__init__(attrs)
+        self.attrs['style'] = 'display: none;' # hide the textarea field
+
+    def get_context(self, name, value, attrs):
+        context = super().get_context(name, value, attrs)
+        context['widget']['contenteditable_name'] = name # add the name to the context for the contenteditable div
+        return context
+
+class AddMCQForm(forms.Form):
+    title=forms.CharField()
+    mcq_question = forms.CharField(widget=ContentEditableTextarea(attrs={
+        'class': 'mcq_question',
+        'placeholder': 'Type MCQ question here....',
+        'tabindex': 1,
+        'required': True,
+    }))
+
+    def clean_mcq_question(self):
+        contenteditable_name = self.fields['mcq_question'].widget.attrs['contenteditable_name']
+        return self.cleaned_data[contenteditable_name]
+   
+
+
 class add_mcq_form(forms.Form):
     # mcq_question = content = QuillFormField()
-    mcq_question = forms.CharField(label="Type MCQ",widget=forms.Textarea(attrs={
-        # 'size': '40',
-         'class': 'mcq_question',
-         'placeholder':"Type MCQ question here....",
-         'tabindex':1,
-         'autocomplete': 'off'
-         }))
+    mcq_question = forms.CharField(widget=forms.Textarea(attrs={
+        'contenteditable': 'true',
+        "style":"display: none;",
+        'class': 'mcq_question',
+        'placeholder': 'Type MCQ question here....',
+        'tabindex': '1',
+        'required': True,
+    }))
     option_a = forms.CharField(widget=forms.TextInput(attrs={
         'class': 'option_a',
          'placeholder':"Type Option (A) here....",

@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'mcqapp',
 
+    'django_quill',
      'ckeditor',
+
 
 
 
@@ -125,6 +127,9 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = 'static/'
 
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'ckeditor_plugins'),
+]
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -137,12 +142,25 @@ MEDIA_URL = '/media/'
 
 CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
 CKEDITOR_UPLOAD_PATH = "uploads/"
-# CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
+CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'
 
 
 CKEDITOR_CONFIGS = {
     'default': {
+        
         'skin': 'moono',
+        # 'skin': 'office2013',
+        
+        'extraPlugins': 'font,justify',
+        'font_names': 'SutonnyMJ;' + 'Arial/Arial, Helvetica, sans-serif;'+'Bangla;'+"Times New Roman",
+        'font_defaultLabel': 'Arial',
+        'contentsCss': [
+            'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700',
+            'https://cdnjs.cloudflare.com/ajax/libs/ckeditor/4.16.0/contents.css',
+            '{% static "fonts/Bangla.ttf" %}',
+            '{% static "fonts/SutonnyMJ.ttf" %}',
+
+        ],
         # 'skin': 'office2013',
         'toolbar_Basic': [
             ['Source', '-', 'Bold', 'Italic']

@@ -13,6 +13,14 @@ class PostAdminForm(forms.ModelForm):
         model = Articless
         fields = '__all__'
 
+
+
+from .models import QuillPost
+
+@admin.register(QuillPost)
+class QuillPostAdmin(admin.ModelAdmin):
+    pass
+
 class PostAdmin(admin.ModelAdmin):
     form = PostAdminForm
 
