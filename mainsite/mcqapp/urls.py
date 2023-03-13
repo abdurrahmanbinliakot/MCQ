@@ -3,9 +3,9 @@ from . import views
 
 urlpatterns = [
 
-    path('', views.AsyncView.as_view(), name='login' ),
+    # path('', views.AsyncView.as_view(), name='login' ),
     # path('', views.Home, name='homepage' ),
-    # path('', views.PostView, name='PostView' ),
+    path('', views.PostView, name='PostView' ),
     path('classlistview', views.ClassView, name='classlistpage' ),
     path('classviewfilter/<int:class_id>', views.ClassViewFilter, name='classviewfilterpage' ),
     path('subjectviewfilter/<int:subject_id>', views.SubjectViewFilter, name='subjectviewfilterpage' ),

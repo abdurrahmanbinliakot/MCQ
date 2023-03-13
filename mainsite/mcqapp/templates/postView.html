@@ -1,10 +1,15 @@
 <!DOCTYPE html>
+{% load static tailwind_tags %}
 {% load static %}
 <html>
 <head>
     <title></title>
+    {% tailwind_css %}
 </head>
 <body>
+    <div class="box-decoration-clone md:box-decoration-slice">
+        jhkjhkjhjk
+      </div>
 
 <form action="{% url 'PostView' %}#last" method="post">
     {% csrf_token %}
@@ -19,6 +24,7 @@
 {% endfor %}
 {% for po in post %}
 <table border="1px" cellspacing="0px">
+
     <tr>
         
         <td colspan="2">{{po.title}}</td>
